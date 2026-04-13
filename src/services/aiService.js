@@ -1,0 +1,156 @@
+import axios from "axios";
+
+
+export const generateSummary = async (text) => {
+ 
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/generate-summary",
+      {
+        text
+      }
+    );
+    return {
+      success: true,
+      generateSummary: response.data[0]?.summary_text
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+       "Summary generation failed"
+    }; 
+  }
+};
+export const suggestTitle = async (text) => {
+
+  try {
+      const response = await axios.post(
+        "http://localhost:5000/generate-title",
+        { text }
+      );
+    
+      const summary = response.data[0]?.summary_text || "";
+    
+      const title = summary
+        .split(" ")
+        .slice(0, 6)
+        .join(" ");
+        
+      return {
+        success: true,
+        suggestTitle: title.charAt(0).toUpperCase() + title.slice(1)
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Title generation failed"
+      }; 
+    }
+  
+  };
+
+  // export const generateTags = async (text) => {
+
+  //   const response = await axios.post(
+  //     "http://localhost:5000/generate-tags",
+  //     { text }
+  //   );
+  
+  //   const summary = response.data[0]?.summary_text || "";
+  
+  //   const stopWords = [
+  //     "the","are","and","for","with","this","that",
+  //     "from","into","have","has","had","was","were",
+  //     "a","an","of","to","in","on","is"
+  //   ];
+  
+  //   const tags = summary
+  //     .toLowerCase()
+  //     .replace(/[.,:/]/g, "")
+  //     .split(" ")
+  //     .filter(word => word.length > 3)
+  //     .filter(word => !stopWords.includes(word));
+  
+  //   return [...new Set(tags)].slice(0,5);
+  // };
+ 
+  export const generateTags = async (text) => {
+
+    try {
+  
+      const response = await axios.post(
+        "http://localhost:5000/generate-tags",
+        { text }
+      );
+  
+      const summary = response.data[0]?.summary_text || "";
+  
+      const stopWords = [
+        "the","are","and","for","with","this","that",
+        "from","into","have","has","had","was","were",
+        "a","an","of","to","in","on","is"
+      ];
+  
+      const tags = summary
+        .toLowerCase()
+        .replace(/[.,:/]/g, "")
+        .split(/\s+/)
+        .filter(word => word.length > 3)
+        .filter(word => !stopWords.includes(word));
+  
+      return {
+        success: true,
+        tags: [...new Set(tags)].slice(0,5)
+      };
+  
+    } catch (error) {
+  
+      return {
+        success: false,
+        message:
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Tag generation failed"
+      };
+  
+    }
+  
+  };
+  
+  export const improveWriting = async (text) => {
+
+    // const response = await axios.post(
+    //   "http://localhost:5000/improve-writing",
+    //   { text }
+    // );
+  
+    // return response.data[0]?.summary_text || "";
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/improve-writing",
+        { text }
+      );
+    
+      //return response.data[0]?.summary_text || "";
+      return {
+        success: true,
+        improvedText: response.data[0]?.summary_text
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Writing improvement failed"
+      }; 
+    }
+  
+  };
+
