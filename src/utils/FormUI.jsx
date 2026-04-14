@@ -14,6 +14,7 @@ const FormUI=({notes})=>{
    
     const [length,setLength]=useState("")
     const [tagInput, setTagInput] = useState("");
+    const [expanded, setExpanded] = useState(false);
     const {id}=useParams()
     const {loading,openSummaryDialog,editNotes,selectedNote}=useSelector((state)=>state.notes)
     const navigate=useNavigate()
@@ -69,7 +70,8 @@ navigate('/')
         onSubmit={handleSubmit}
         >
             <Stack spacing={2}>
-                <Grid container spacing={2}>
+
+                <Grid container spacing={2} alignItems={'center'}>
                     <Grid size={8}>
                     <TextField
   label="Title"
@@ -91,22 +93,30 @@ onClick={()=>handleSuggestTitle(editNotes.content)}>suggest Title</Button>
                 
 
     <Grid container spacing={2}>
-        <Grid size={8}>
+        <Grid size={12}>
+      
         <TextareaAutosize
-  name="content"
-  minRows={3}
+  minRows={expanded ? 8 : 3}
+  maxRows={expanded ? 15 : 3}
   value={editNotes.content}
+  placeholder="Enter the text to generate the content"
   onChange={(e) =>
-    dispatch(setEditNotes({
-      content: e.target.value
-      }))}
-  placeholder="Minimum 3 rows"
-  style={{ width: "100%" }}
+    dispatch(
+      setEditNotes({
+        content: e.target.value
+      })
+    )
+  }
+  onFocus={() => setExpanded(true)}
+  onBlur={() => setExpanded(false)}
+ style={{
+  width: "100%",
+  
+}}
 />
-        
        
         </Grid>
-        <Grid size={4}>
+        {/* <Grid size={4}>
         <FormControl sx={{ m: 1, minWidth:120}} >
         <Select
           value={length}
@@ -122,11 +132,11 @@ onClick={()=>handleSuggestTitle(editNotes.content)}>suggest Title</Button>
           <MenuItem value={"large"}>large</MenuItem>
         </Select>
       </FormControl>
-        </Grid>
+        </Grid> */}
        
     </Grid>
     {/* Generate Summary, Improve Writing Generate Tags Buttons*/}
-    <Grid container spacing={2}>
+    <Grid container spacing={2} alignItems={'center'}>
 
     <Grid size={4}>
         <Button variant="outlined" disabled={!editNotes.content}

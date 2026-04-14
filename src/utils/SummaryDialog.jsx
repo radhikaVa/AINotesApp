@@ -25,10 +25,7 @@ const {GenerateSummary}=useGenerateSummary();
 
      <Button  onClick={()=>{
       const content=editNotes.summary;
-       dispatch(setEditNotes((prev) => ({
-                      ...prev,
-                      summary: ""
-                    })))
+    
       GenerateSummary('improved',content)}}>
       Regenerate
     </Button> 
@@ -37,13 +34,40 @@ const {GenerateSummary}=useGenerateSummary();
       Copy
     </Button>
 
-    <Button onClick={() => { dispatch(setEditNotes({
-    content: editNotes.improvedContent}
-  ))
-  dispatch(setOpenSummaryDialog(false));
-  }}>
-      Replace Content
-    </Button>
+   <Button
+  disabled={!editNotes.summary}
+  onClick={() => {
+
+    dispatch(
+      setEditNotes({
+        content: editNotes.summary
+      })
+    );
+
+    dispatch(setOpenSummaryDialog(false));
+
+  }}
+>
+  Replace With Summary
+</Button>
+
+
+<Button
+  disabled={!editNotes.improvedContent}
+  onClick={() => {
+
+    dispatch(
+      setEditNotes({
+        content: editNotes.improvedContent
+      })
+    );
+
+    dispatch(setOpenSummaryDialog(false));
+
+  }}
+>
+  Replace With Improved Content
+</Button>
 
     <Button onClick={() =>dispatch( setOpenSummaryDialog(false))}>
       Close

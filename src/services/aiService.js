@@ -10,9 +10,11 @@ export const generateSummary = async (text) => {
         text
       }
     );
+    console.log(response.data.generateSummary,'summmmmmmmmmmm',response);
+    
     return {
       success: true,
-      generateSummary: response.data[0]?.summary_text
+      generateSummary: response.data?.generateSummary
     };
   } catch (error) {
     return {
@@ -32,7 +34,7 @@ export const suggestTitle = async (text) => {
         { text }
       );
     
-      const summary = response.data[0]?.summary_text || "";
+      const summary = response.data.title || "";
     
       const title = summary
         .split(" ")
@@ -41,7 +43,8 @@ export const suggestTitle = async (text) => {
         
       return {
         success: true,
-        suggestTitle: title.charAt(0).toUpperCase() + title.slice(1)
+       // suggestTitle: title.charAt(0).toUpperCase() + title.slice(1)
+      suggestTitle: summary
       };
     } catch (error) {
       return {
@@ -106,7 +109,8 @@ export const suggestTitle = async (text) => {
   
       return {
         success: true,
-        tags: [...new Set(tags)].slice(0,5)
+        // tags: [...new Set(tags)].slice(0,5)
+        tags:response.data
       };
   
     } catch (error) {
@@ -140,7 +144,7 @@ export const suggestTitle = async (text) => {
       //return response.data[0]?.summary_text || "";
       return {
         success: true,
-        improvedText: response.data[0]?.summary_text
+        improvedText: response.data?.improvedContent
       };
     } catch (error) {
       return {

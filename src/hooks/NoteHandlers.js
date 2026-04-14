@@ -13,7 +13,7 @@ console.log(content,'reg');
       dispatch(setLoading(true));
   
       const result = await generateSummary(content);
-    console.log(result,'hhhhhhhhhhhhhhhhhhhhhhh');
+    console.log(result.generateSummary,'hhhhhhhhhhhhhhhhhhhhhhh');
       if (!result.success) {
 
   dispatch(
@@ -119,7 +119,7 @@ if (!result.generateSummary) {
          
          if (result.success) {
      
-           if (result.suggestTitle.length > 0) {
+           if (result.suggestTitle?.length > 0) {
        console.log('into sugge',result.suggestTitle);
        
               dispatch( setEditNotes({
@@ -175,14 +175,15 @@ if (!result.generateSummary) {
     
       const result = await generateTags(content);
     
-      console.log(result);
+      console.log(result.tags.data,'result tag data');
+    const tags=  result.tags.data
     
       if (result.success) {
     
-        if (result.tags.length > 0) {
+        if (tags?.length > 0) {
     
          dispatch( setEditNotes({
-            tag: result.tags
+            tag: tags
           }));
     
           dispatch(
@@ -230,7 +231,7 @@ if (!result.generateSummary) {
         const result = await improveWriting(content);
         if (result.success) {
     
-          if (result.improvedText.length > 0) {
+          if (result.improvedText?.length > 0) {
       
               dispatch(setEditNotes({
                   improvedContent: result.improvedText
