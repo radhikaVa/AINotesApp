@@ -333,8 +333,7 @@ console.log(req.body,'notes for add')
   })
   // update notes
   app.put("/notes/:id", async (req, res) => {
-// console.log(req.params.id,'update',req.body)
-    try {
+ try {
   
       const updatedNote = await Note.findByIdAndUpdate(
         req.params.id,
@@ -374,9 +373,9 @@ console.log(req.body,'notes for add')
     }
   
   });
-  
+
   app.get("/", (req, res) => {
-  res.send("AI Notes Backend Running");
+  res.send("AI Notes Backend Running Successfully 🚀");
 });
 
 const PORT = process.env.PORT || 5000;
