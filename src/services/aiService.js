@@ -1,11 +1,11 @@
 import axios from "axios";
 
-
+const BASE_URL="https://ainotesapp-fexq.onrender.com"
 export const generateSummary = async (text) => {
  
   try {
     const response = await axios.post(
-      "http://localhost:5000/generate-summary",
+      `${BASE_URL}/generate-summary`,
       {
         text
       }
@@ -32,7 +32,7 @@ export const suggestTitle = async (text) => {
 
   try {
       const response = await axios.post(
-        "http://localhost:5000/generate-title",
+         `${BASE_URL}/generate-title`,
         { text }
       );
     
@@ -90,7 +90,7 @@ export const suggestTitle = async (text) => {
     try {
   
       const response = await axios.post(
-        "http://localhost:5000/generate-tags",
+        `${BASE_URL}/generate-tags`,
         { text }
       );
   
@@ -139,7 +139,7 @@ export const suggestTitle = async (text) => {
     // return response.data[0]?.summary_text || "";
     try {
       const response = await axios.post(
-        "http://localhost:5000/improve-writing",
+        `${BASE_URL}/improve-writing`,
         { text }
       );
     

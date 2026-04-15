@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/notes";
+// const BASE_URL = "http://localhost:5000/notes";
+const BASE_URL="https://ainotesapp-fexq.onrender.com/notes"
 
 
 

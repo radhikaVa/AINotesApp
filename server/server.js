@@ -106,6 +106,7 @@ let summary =
 summary = summary.replace(/\[INTERVIEWER\].*/gi, "");
 summary = summary.replace(/\[ASSISTANT\].*/gi, "");
 summary = summary.replace(/\[USER\].*/gi, "");
+summary=summary.replace(/\[Summary\].*/gi,"");
 res.status(200).json({
   success: true,
   generateSummary:summary
