@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL="https://ainotesapp-fexq.onrender.com"
+const BASE_URL=process.env.REACT_APP_BASE_URL
 export const generateSummary = async (text) => {
  
   try {
@@ -37,12 +37,6 @@ export const suggestTitle = async (text) => {
       );
     
       const summary = response.data.title || "";
-    
-      const title = summary
-        .split(" ")
-        .slice(0, 6)
-        .join(" ");
-        
       return {
         success: true,
        // suggestTitle: title.charAt(0).toUpperCase() + title.slice(1)
@@ -94,20 +88,20 @@ export const suggestTitle = async (text) => {
         { text }
       );
   
-      const summary = response.data[0]?.summary_text || "";
+      // const summary = response.data[0]?.summary_text || "";
   
-      const stopWords = [
-        "the","are","and","for","with","this","that",
-        "from","into","have","has","had","was","were",
-        "a","an","of","to","in","on","is"
-      ];
+      // const stopWords = [
+      //   "the","are","and","for","with","this","that",
+      //   "from","into","have","has","had","was","were",
+      //   "a","an","of","to","in","on","is"
+      // ];
   
-      const tags = summary
-        .toLowerCase()
-        .replace(/[.,:/]/g, "")
-        .split(/\s+/)
-        .filter(word => word.length > 3)
-        .filter(word => !stopWords.includes(word));
+      // const tags = summary
+      //   .toLowerCase()
+      //   .replace(/[.,:/]/g, "")
+      //   .split(/\s+/)
+      //   .filter(word => word.length > 3)
+      //   .filter(word => !stopWords.includes(word));
   
       return {
         success: true,

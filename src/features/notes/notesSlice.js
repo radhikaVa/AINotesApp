@@ -51,7 +51,7 @@ const noteSlice=createSlice({
         
         // States
         setNotes:(state,action)=>{
-            state.notes=action.payload
+            state.notes=action.payload;
         },
         setEditNotes: (state, action) => {
 //nsole.log('into set edit',action.payload);

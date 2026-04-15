@@ -1,4 +1,4 @@
-import { Box, Button, FormControl,Grid,TextareaAutosize, MenuItem, Select, Stack,
+import { Box, Button,Grid,TextareaAutosize, Stack,
      TextField, Autocomplete, 
      CircularProgress} from "@mui/material"
 import { useEffect, useState } from "react";
@@ -10,9 +10,8 @@ import { createNote, updateNote } from "../services/notesService";
 import { useGenerateSummary } from "../hooks/NoteHandlers.js";
 
 
-const FormUI=({notes})=>{
+const FormUI=()=>{
    
-    const [length,setLength]=useState("")
     const [tagInput, setTagInput] = useState("");
     const [expanded, setExpanded] = useState(false);
     const {id}=useParams()

@@ -3,10 +3,10 @@ import NoteCard from '../components/NoteCard'
 import { useDispatch, useSelector } from 'react-redux'
 import SearchBar from '../components/SearchBar';
 import { getNotes } from '../services/notesService';
-import { Grid } from '@mui/material';
+import { Grid ,CircularProgress, Box} from '@mui/material';
 
 const Dashboard = () => {
-  const {searchValue,selectedTag,notes}=useSelector((state)=>state.notes);
+  const {searchValue,selectedTag,notes,loading}=useSelector((state)=>state.notes);
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(getNotes());
@@ -38,7 +38,11 @@ return Array.isArray(item.tag)
 return (
     <>
     <SearchBar/>
+    <Box sx={{textAlign:'center'}}>
+    {loading && <CircularProgress />}
+    </Box>
     <Grid container spacing={2}>
+
                     {
         filteredNotes?.map((note)=>(
           <Grid item xs={12} md={6} lg={4} key={note._id}>
