@@ -44,8 +44,9 @@ export default function Navbar() {
 >
   Smart AI Notes
 </Typography>
-        <Divider sx={{mx:2}} orientation="vertical" variant="middle"  flexItem />
-      
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+           <Divider sx={{mx:2}} orientation="vertical" variant="middle"  flexItem />
+     
           <Link
   to="/"
   style={{
@@ -59,7 +60,8 @@ export default function Navbar() {
   <Typography sx={{ ml: 1 }}>
     Dashboard
   </Typography>
-</Link>
+</Link></Box>
+         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
           <Divider sx={{mx:2,color:'inherit'}} color='inherit' orientation="vertical" variant="middle"  flexItem />
        
          <Link
@@ -75,7 +77,7 @@ export default function Navbar() {
   <Typography sx={{ ml: 1 }}>
   Create Note
   </Typography>
-</Link>
+</Link></Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
            
@@ -89,8 +91,8 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
      
-      <Toolbar/>
-      
+      {/* <Toolbar/>
+       */}
     </Box>
   );
 }

@@ -25,10 +25,8 @@ import { deleteNote } from '../services/notesService';
     ? note.tag.split(",")
     : [];
     
-  return (
-  
-                  
-            <Card sx={{ minWidth: 400 }} onClick={()=>navigate(`/note/${note._id}`)}>
+  return (               
+            <Card sx={{ width: "100%" }} onClick={()=>navigate(`/note/${note._id}`)}>
             <CardContent>
               <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                 {note.title}

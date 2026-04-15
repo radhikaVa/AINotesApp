@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import NoteEditor from "./components/NoteEditor";
 import NoteDetails from "./components/NoteDetails";
 import AppSnakeBar  from "./utils/AppSnakeBar";
+import MobileFabMenu from "./components/MobileFabMenu";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
     <Navbar/>
+    <MobileFabMenu/>
    <AppSnakeBar/>
     <br/>
     <Routes>

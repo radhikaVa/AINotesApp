@@ -32,7 +32,9 @@ const TagChip = () => {
         textColor="secondary"
         indicatorColor="secondary"
         variant="scrollable"
-        scrollButtons="auto"
+        // scrollButtons="auto"
+        scrollButtons
+  allowScrollButtonsMobile
         aria-label="scrollable auto tabs example"
       >
         <Tab label="All" value="" />

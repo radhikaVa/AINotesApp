@@ -37,19 +37,25 @@ return Array.isArray(item.tag)
 
 return (
     <>
-    <SearchBar/>
-    <Box sx={{textAlign:'center'}}>
+    <Box sx={{ px: { xs: 2, md: 2 } ,mt: { xs: 11, md: 8 }}}>
+  <SearchBar />
+</Box>
+    
+    <Box textAlign={'center'}>
     {loading && <CircularProgress />}
     </Box>
-    <Grid container spacing={2}>
+    <Box sx={{ px: { xs:2, md: 2 },mb:{xs:2} }}>
+    <Grid container spacing={2} >
 
                     {
         filteredNotes?.map((note)=>(
-          <Grid item xs={12} md={6} lg={4} key={note._id}>
+           <Grid  size={{ xs:12,md:4, lg:4}} key={note._id}>
+         
             <NoteCard note={note}/>
             </Grid>
         ))}
         </Grid>
+        </Box>
     </>
   )
 }

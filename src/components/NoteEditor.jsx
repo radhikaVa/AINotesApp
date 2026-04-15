@@ -25,7 +25,8 @@ const NoteEditor = () => {
           mb: 2,
           borderRadius: 3,
           maxWidth: 600,
-          margin: "auto"
+          margin: "auto",
+          mt:{xs:6}
         }}
       >
         {

@@ -23,7 +23,7 @@ const navigate=useNavigate()
 
   return (
     <>
-    <Box sx={{ maxWidth: 800, margin: "auto", p: 3 }}>
+    <Box sx={{ maxWidth: 800, margin: "auto", p: 3,mt: { xs: 5} }} >
 
 {/* Title */}
 <Box display={'flex'} gap={2} sx={{cursor:'pointer'}}>

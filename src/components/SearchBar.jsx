@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -17,14 +17,14 @@ import TagChip from './TagChip';
     <>
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid size={8}>
+        <Grid  size={{ xs: 12, md: 8 }}>
           
         <OutlinedInput
             placeholder='Search...'
           id="input-with-icon-adornment"
           name='searchValue'
          value={searchValue}
-         sx={{ml:1}}
+         
          onChange={(e)=>dispatch(setSearchValue(e.target.value))}
           fullWidth
           startAdornment={
@@ -48,9 +48,11 @@ import TagChip from './TagChip';
          
         /> 
         </Grid>
-        <Grid size={4}>
-        
-      <TagChip/>
+        <Grid  size={{ xs: 12, md: 4 }}>
+        <Box sx={{ px: { xs: 1, md: 2 } }}>
+ <TagChip/>
+</Box>
+      
         </Grid>
        
       </Grid>
