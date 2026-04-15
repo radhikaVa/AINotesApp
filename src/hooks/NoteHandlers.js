@@ -126,16 +126,11 @@ if (!result.generateSummary) {
                    
                    title: result.suggestTitle
                  }))
-              //  setEditNotes(prev => ({
-              //   ...prev,
-              //   title: result.suggestTitle
-              // }));
-    
        
              dispatch(
                setSnackbar({
                  open: true,
-                 message: "Title generation failed",
+                 message: "Title generation Successfully",
                  severity: "success"
                })
              );

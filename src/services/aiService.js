@@ -27,6 +27,8 @@ export const generateSummary = async (text) => {
   }
 };
 export const suggestTitle = async (text) => {
+  console.log(text,'suggggggggg');
+  
 
   try {
       const response = await axios.post(
