@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNoteById } from '../services/notesService';
+import { deleteNote, getNoteById } from '../services/notesService';
 
 const NoteDetails = () => {
    // const notes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -48,9 +48,18 @@ const navigate=useNavigate()
 
 
 {/* Content */}
-<Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+<Accordion sx={{ mt: 3 }}>
+  <AccordionSummary>
+    <Typography> Content</Typography>
+  </AccordionSummary>
+
+  <AccordionDetails>
+      <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
   {selectedNote?.content}
 </Typography>
+  </AccordionDetails>
+</Accordion>
+
 {/* Summary Accordion (PLACE HERE ✅) */}
 <Accordion sx={{ mt: 3 }}>
   <AccordionSummary>
@@ -90,13 +99,15 @@ const navigate=useNavigate()
 </Box>
 
 {/* Action Buttons */}
-<Box sx={{ mt: 4, display: "flex", gap: 2 }}>
+<Box sx={{ mt: 4, display: "flex",flexWrap:'wrap', gap: 2 ,alignItems:'center'}}>
     <Link to={`/edit/${id}`}>
-  <Button variant="contained">Edit</Button></Link>
+  <Button variant="outlined">Edit</Button></Link>
   
-  <Button variant="outlined" color="error">Delete</Button>
-  <Button variant="outlined">Generate Summary</Button>
-  <Button variant="outlined">Improve Writing</Button>
+  <Button variant="outlined" color="error"
+  onClick={()=>dispatch(deleteNote(id))}
+  >Delete</Button>
+  {/* <Button variant="outlined">Generate Summary</Button>
+  <Button variant="outlined">Improve Writing</Button> */}
 </Box>
 
 </Box>
