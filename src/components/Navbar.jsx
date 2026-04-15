@@ -79,14 +79,14 @@ export default function Navbar() {
   </Typography>
 </Link></Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-           
+          
             <Switch  checked={checked} 
             onChange={handleChange}
             // color="secondary"
-             />
+            
+            />
            
-          </Box>
+        
           
         </Toolbar>
       </AppBar>

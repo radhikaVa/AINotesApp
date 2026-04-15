@@ -1,24 +1,48 @@
-import { Paper } from '@mui/material'
+import { Box, Button, Paper, Typography } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react'
 import FormUI from '../utils/FormUI'
+import { useNavigate } from 'react-router-dom';
 
 const Createnotes = () => {
+  
+const navigate=useNavigate()
 
   return (
-    <Paper
-    elevation={2}
+  
+     <Box sx={{ mt: { xs: 6, md: 10 } }}>
+  <Box
     sx={{
-      p: 2,
-      mb: 2,
-      borderRadius: 3,
       maxWidth: 600,
-      margin: "auto",
-      mt:{xs:6}
+      mx: "auto"
     }}
   >
-    {/* {formUI} */}
-    <FormUI/>
-           </Paper>
+    <Box
+      display="flex"
+      alignItems="center"
+      sx={{ cursor: "pointer" ,mb:2}}
+    >
+      <Button onClick={() => navigate("/")}>
+        <ArrowBackIcon />
+      </Button>
+
+      <Typography variant="h5">
+        CREATE NOTES
+      </Typography>
+    </Box>
+
+    <Paper
+      elevation={2}
+      sx={{
+        p: 2,
+        mb: 2,
+        borderRadius: 3
+      }}
+    >
+      <FormUI/>
+    </Paper>
+    </Box>
+</Box>
        
   )
 }

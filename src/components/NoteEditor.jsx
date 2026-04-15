@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FormUI from '../utils/FormUI'
-import { Paper } from '@mui/material'
+import { Box, Button, Paper, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { getNoteById } from '../services/notesService'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const NoteEditor = () => {
   const {selectedNote}=useSelector((state)=>state.notes)
@@ -15,29 +16,49 @@ const NoteEditor = () => {
         dispatch(getNoteById(id))
       }
     }, [id,dispatch]);
-
+const navigate=useNavigate()
   
     return (
-        <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          mb: 2,
-          borderRadius: 3,
-          maxWidth: 600,
-          margin: "auto",
-          mt:{xs:6}
-        }}
-      >
-        {
-         (!selectedNote) ?
-           <div>Loading note...</div>
-          :(
-            <FormUI/>
-          )
-        }
-       
+      <>
+      
+    <Box sx={{ mt: { xs: 6, md: 10 } }}>
+  <Box
+    sx={{
+      maxWidth: 600,
+      mx: "auto"
+    }}
+  >
+    <Box
+      display="flex"
+      alignItems="center"
+      sx={{ cursor: "pointer" ,mb:2}}
+    >
+      <Button onClick={() => navigate("/")}>
+        <ArrowBackIcon />
+      </Button>
+
+      <Typography variant="h5">
+        EDIT NOTES
+      </Typography>
+    </Box>
+
+    <Paper
+      elevation={2}
+      sx={{
+        p: 2,
+        mb: 2,
+        borderRadius: 3
+      }}
+    >
+      {!selectedNote ? (
+        <div>Loading note...</div>
+      ) : (
+        <FormUI />
+      )}
     </Paper>
+  </Box>
+</Box>
+     </>
   )
 }
 
