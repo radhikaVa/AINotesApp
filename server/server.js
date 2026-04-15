@@ -6,47 +6,55 @@ const connectDB =require('./config/db')
 const Note = require("./models/Note")
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 connectDB ()
- const summary= async(text,res) =>{
-  
-  if (!text) {
-      return res.status(400).json({
-        error: "Text is required"
-      });
-    }
+ async function generateTitle(noteText) {
 
-    const response = await axios.post(
-    "https://router.huggingface.co/v1/chat/completions",
-	
-   {
-     model: "MiniMaxAI/MiniMax-M2.7:novita",
-    messages: [
-        {
-            role: "user",
-            content: JSON.stringify(text),
-        },
-    ],
-   
+	const response = await fetch(
+		"https://router.huggingface.co/v1/chat/completions",
+		{
+			headers: {
+				Authorization: `Bearer ${process.env.HF_TOKEN}`,
+				"Content-Type": "application/json",
+			},
+			method: "POST",
+			body: JSON.stringify({
+				model: "meta-llama/Llama-3.1-8B-Instruct:novita",
 
+				max_tokens: 12,
+				temperature: 0.3,
 
-      }, {
-        headers: {
-          Authorization: `Bearer ${process.env.HF_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-          timeout: 120000
-      },
-     
-    );
-console.log("response", response.data.choices[0].message.content);
-    
-res.status(200).json({
-  success: true,
-  generateSummary: response.data.choices[0].message.content
-});
-  }
+				messages: [
+					{
+						role: "system",
+						content:
+							"Generate ONLY a short title under 6 words describing the topic. No explanation. No prefixes. No questions."
+					},
+					{
+						role: "user",
+						content: noteText.slice(0, 800)
+					}
+				]
+			}),
+		}
+	);
+
+	const result = await response.json();
+ 
+
+	let title =
+		result?.choices?.[0]?.message?.content?.trim() ||
+		"Untitled Note";
+ console.log(title,'rrrrrrrrrrrr')
+	// cleanup prefixes if model adds them
+	title = title.replace(/^\[.*?\]\s*/, "");
+	title = title.replace(/^assistant:\s*/i, "");
+
+	return title;
+}
 
 app.post("/generate-summary", async (req, res) => {
   
@@ -64,11 +72,19 @@ console.log("Incoming summary text:", req.body.text);
 	
    {
      model: "HuggingFaceH4/zephyr-7b-beta:featherless-ai",
+      max_tokens: 150,
+      temperature: 0.3,
     messages: [
+      {
+          role: "system",
+          content:
+            "Summarize the following text into a short paragraph. Return only the summary. No interviewer labels. No assistant labels. No dialogue."
+        },
         {
             role: "user",
-            content: JSON.stringify(req.body.text),
+            content: JSON.stringify(req.body.text.slice(0, 2000)),
         },
+        
     ],
    
 
@@ -84,14 +100,15 @@ console.log("Incoming summary text:", req.body.text);
     );
 console.log("response", response.data.choices[0].message.content);
     
-// res.status(200).json({
-//   success: true,
-//   generateSummary: response.data
-// });
+let summary =
+  response?.data?.choices?.[0]?.message?.content?.trim() || "";
+
+summary = summary.replace(/\[INTERVIEWER\].*/gi, "");
+summary = summary.replace(/\[ASSISTANT\].*/gi, "");
+summary = summary.replace(/\[USER\].*/gi, "");
 res.status(200).json({
   success: true,
-  generateSummary:
-    response.data.choices[0].message.content
+  generateSummary:summary
 });
  
  } catch (error) {
@@ -114,195 +131,34 @@ res.status(200).json({
 
 app.post("/generate-title", async (req, res) => {
 
-    try {
-  
-      const response = await axios.post(
-       "https://router.huggingface.co/v1/chat/completions",
-        
-      {
-        model: "HuggingFaceH4/zephyr-7b-beta:featherless-ai",
-        max_tokens: 15,
-temperature: 0.4,
-top_p: 0.9,
-   messages: [
-  {
-    role: "system",
-    content:
-      "You generate titles only. Respond with ONE short title under 6 words. No explanation."
-  },
-  {
-    role: "user",
-    content: req.body.text.slice(0, 1200)
-  }
-]
-      },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.HF_TOKEN}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
-  
-      //console.log(response.data,'titlelllllllllll',response.data.choices[0].message.content);
-  
-let title = response.data.choices[0].message.content.trim();
+	try {
 
-if (
-  !title ||
-  title.toLowerCase().includes("generate a short title")
-) {
-  title = "Untitled Note";
-}
+		if (!req.body.text?.trim()) {
+			return res.status(400).json({
+				success: false,
+				message: "Text required"
+			});
+		}
 
-console.log(title, "titlelllllllllll");
+		const title = await generateTitle(req.body.text);
 
-       res.status(200).json({
-  success: true,
-  title:title
-       })
-  
-    } catch (error) {
-  
-      console.error("HF ERROR:", error.response?.data || error.message);
-  
-      res.status(500).json({
-        error: "Title generation failed"
-      });
-  
-    }
-  
-  });
-// app.post("/generate-title", async (req, res) => {
+		res.json({
+			success: true,
+			title:title
+		});
 
-//     try {
-  
-//       const response = await axios.post(
-//         "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-//         {
-//           inputs: `Generate a short title:\n${req.body.text.substring(0, 600)}`
-//       },
-//         {
-//           headers: {
-//             Authorization: `Bearer ${process.env.HF_TOKEN}`,
-//             "Content-Type": "application/json"
-//           }
-//         }
-//       );
-  
-//       console.log(response.data,'titlelllllllllll');
-  
-//       res.json(response.data);
-  
-//     } catch (error) {
-  
-//       console.error("HF ERROR:", error.response?.data || error.message);
-  
-//       res.status(500).json({
-//         error: "Title generation failed"
-//       });
-  
-//     }
-  
-//   });
+	} catch (error) {
 
+		console.error(error);
 
-//   app.post("/generate-tags", async (req, res) => {
-// console.log(req.body.text,'tags request')
-//     try {
-//   //"https://router.huggingface.co/hf-inference/models/facebook/bart-large-mnli",
-//       const response = await axios.post(
-//         "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-//        //"https://router.huggingface.co/hf-inference/models/facebook/bart-large-mnli",
-//         {
-//           inputs: `Extract keywords from this text:\n${req.body.text}`,
-//           parameters: {
-//             max_length: 20
-//           }
-//         },
-//         {
-//           headers: {
-//             Authorization: `Bearer ${process.env.HF_TOKEN}`,
-//             "Content-Type": "application/json"
-//           }
-//         }
-//       );
-  
-//       res.json(response.data);
-//       console.log(response.data,'response.data------tags')
-  
-//     } catch (error) {
-  
-//       console.error("HF ERROR:", error.response?.data || error.message);
-  
-//       // res.status(500).json({
-//       //   error: "Tag generation failed"
-//       // });
-//       res.json({
-//         success: false,
-//         message: "Tag generation failed",
-//         data: []
-//       });
-  
-//     }
-  
-//   });
-  
-// app.post("/generate-tags", async (req, res) => {
+		res.status(500).json({
+			success: false,
+			message: "Title generation failed"
+		});
 
-//   try {
-//  console.log(req.body.text,'req.body.text');
-//     const response = await axios.post(
-//      // "https://router.huggingface.co/models/facebook/bart-large-mnli",
-    
-//       "https://router.huggingface.co/hf-inference/models/facebook/bart-large-mnli",
-//       {
-//         inputs: req.body.text,
+	}
 
-//         parameters: {
-//           candidate_labels: [
-//             "react",
-//             "javascript",
-//             "ai",
-//             "notes",
-//             "frontend",
-//             "backend",
-//             "learning",
-//             "career",
-//             "productivity"
-//           ]
-//         }
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${process.env.HF_TOKEN}`,
-//           "Content-Type": "application/json"
-//         }
-//       }
-//     );
-//     const tags = response.data.slice(0, 6).map(item => item.label);
-
-// console.log(tags,'response.data.labels-----')
-//     res.json({
-//       success: true,
-//       data:tags
-//       //data: response.data.labels.slice(0, 5)
-//     });
-
-//   } catch (error) {
-
-//     console.error("HF ERROR:", error.response?.data || error.message);
-
-//     res.json({
-//       success: false,
-//       message: "Tag generation failed",
-//       data: []
-//     });
-
-//   }
-
-// });
-
+});
 app.post("/generate-tags", async (req, res) => {
 
   try {
@@ -328,7 +184,26 @@ app.post("/generate-tags", async (req, res) => {
       }
     );
 console.log(response.data,'response.data-------------')
-    const tags = response.data.map(item => item.word);
+   
+     // Step 1: extract words
+    let tags = response.data.map(item => item.word);
+
+    // Step 2: normalize (lowercase + trim)
+    tags = tags.map(tag => tag.toLowerCase().trim());
+
+    // Step 3: remove duplicates
+    tags = [...new Set(tags)];
+
+    // Step 4: optional limit (recommended)
+   // tags = tags.slice(0, 6);
+   tags = tags.filter(
+  (tag, index, self) =>
+    !self.some(
+      other =>
+        other !== tag &&
+        other.includes(tag)
+    )
+);
 
     res.json({
       success: true,
@@ -352,15 +227,7 @@ console.log(response.data,'response.data-------------')
 app.post("/improve-writing", async (req, res) => {
 
     try {
-  
-      // const response = await axios.post(
-      //   "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-      //   {
-      //     inputs: `Rewrite this text professionally and clearly:\n${req.body.text}`,
-      //     parameters: {
-      //       max_length: 120
-      //     }
-      //   },
+
        const response = await axios.post(
    "https://router.huggingface.co/v1/chat/completions",
 	
@@ -405,7 +272,7 @@ app.post("/improve-writing", async (req, res) => {
   });
 
   // routes
-
+// create new note
   app.post("/notes", async (req, res) => {
 console.log(req.body,'notes for add')
     try {
@@ -457,7 +324,6 @@ console.log(req.body,'notes for add')
           error: "Note not found"
         });
       }
-      console.log(note,'serviceeee')
       res.json(note);
     } catch (error) {
       res.status(500).json({
@@ -473,7 +339,8 @@ console.log(req.body,'notes for add')
       const updatedNote = await Note.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true }
+       
+         { returnDocument: "after" , runValidators: true}
       );
   
       res.json(updatedNote);
@@ -507,6 +374,9 @@ console.log(req.body,'notes for add')
     }
   
   });
-app.listen(5000, () =>
-  console.log("Server running on port 5000")
-);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
