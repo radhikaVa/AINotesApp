@@ -374,6 +374,10 @@ console.log(req.body,'notes for add')
     }
   
   });
+  
+  app.get("/", (req, res) => {
+  res.send("AI Notes Backend Running");
+});
 
 const PORT = process.env.PORT || 5000;
 
