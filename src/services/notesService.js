@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // const BASE_URL = "http://localhost:5000/notes";
-const BASE_URL=process.env.REACT_APP_BASE_URL
+const BASE_URL=`${process.env.REACT_APP_BASE_URL}/notes`
 
 console.log(process.env.REACT_APP_BASE_URL,'process.env.REACT_APP_BASE_URL;');
 
