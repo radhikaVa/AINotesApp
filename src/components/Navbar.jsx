@@ -42,7 +42,7 @@ export default function Navbar() {
     cursor:'pointer'
   }}
 >
-  Smart Notes AI
+  Smart AI Notes
 </Typography>
         <Divider sx={{mx:2}} orientation="vertical" variant="middle"  flexItem />
       
