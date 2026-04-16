@@ -1,8 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material'
+import { Button, Dialog, DialogActions,Box, DialogContent, DialogTitle, Typography } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setEditNotes, setOpenSummaryDialog } from '../features/notes/notesSlice.js'
 import {useGenerateSummary} from "../hooks/NoteHandlers.js"              
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const SummaryDialog = () => {
  const {openSummaryDialog,editNotes}=useSelector((state)=>state.notes)
@@ -10,7 +11,14 @@ const SummaryDialog = () => {
 const {GenerateSummary}=useGenerateSummary();
   return (
     <>
+     
     <Dialog open={openSummaryDialog}>
+      <Box display={'flex'} sx={{cursor:'pointer',alignContent:'center'}}>
+    <Button onClick={() =>dispatch( setOpenSummaryDialog(false))}><ArrowBackIcon /></Button>
+    
+      <Typography variant="h5" textAlign={'center'} mt={1}>
+      PREVIEW 
+    </Typography></Box>
       <DialogTitle>{editNotes.title}</DialogTitle>
       <DialogContent>
         <Typography>Content :</Typography>
@@ -21,7 +29,7 @@ const {GenerateSummary}=useGenerateSummary();
         <Typography variant='h5'>Improved Content :</Typography>
         <Typography>{editNotes.improvedContent}</Typography>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{display:'flex',flexWrap:'wrap'}}>
 
      <Button  onClick={()=>{
       const content=editNotes.summary;

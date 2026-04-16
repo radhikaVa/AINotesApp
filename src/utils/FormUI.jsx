@@ -62,7 +62,10 @@ navigate('/')
 }
     return(
 <>
-{loading && <CircularProgress />}
+<Box textAlign={'center'}>
+    {loading && <CircularProgress />}
+    </Box>
+
     <Box
     alignItems={'center'}
         component='form'
