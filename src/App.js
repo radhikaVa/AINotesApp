@@ -1,9 +1,4 @@
-import { Route, Routes } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import CreateNote from "./pages/CreateNote";
 import Navbar from "./components/Navbar";
-import NoteEditor from "./components/NoteEditor";
-import NoteDetails from "./components/NoteDetails";
 import AppSnakeBar  from "./utils/AppSnakeBar";
 import MobileFabMenu from "./components/MobileFabMenu";
 import AppRoutes from "./routes/AppRoutes";
