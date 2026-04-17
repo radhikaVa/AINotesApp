@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SummaryDialog from "./SummaryDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { addNotes, setEditNotes} from "../features/notes/notesSlice";
+import { addNotes, clearSelectedNote, setEditNotes} from "../features/notes/notesSlice";
 import { createNote, updateNote } from "../services/notesService";
 import { useGenerateSummary } from "../hooks/NoteHandlers.js";
+import CommonButton from "./CommonButton.jsx";
 
 
 const FormUI=()=>{
@@ -22,10 +23,10 @@ const FormUI=()=>{
     const {GenerateSummary,handleImproveWriting,handleSuggestTitle,handleGenerateTags} =
      useGenerateSummary();
 useEffect(() => {
-  if (selectedNote) {
+  if (selectedNote && id) {
     dispatch(setEditNotes(selectedNote));
   }
-}, [selectedNote,dispatch]);
+}, [selectedNote,dispatch,id]);
    
 
     const handleSubmit=async(event)=>{
@@ -41,9 +42,9 @@ if (id) {
     tag: editNotes.tag
   };
   await dispatch(updateNote({id,note:updatedNoteData}));
+  await dispatch(clearSelectedNote())
 
 }else{
-     console.log(editNotes,'editnotes for adding ');
      
     const newnotes={
         title:editNotes.title,
@@ -55,7 +56,8 @@ if (id) {
     }
   
    const saveNote=await createNote(newnotes)
-   dispatch(addNotes(saveNote))
+   await dispatch(addNotes(saveNote))
+   await dispatch(clearSelectedNote())
    }
 
 navigate('/')    
@@ -88,8 +90,14 @@ navigate('/')
 />
                     </Grid>
                    <Grid size={4}>
-<Button variant='outlined' disabled={!editNotes.content}
-onClick={()=>handleSuggestTitle(editNotes.content)}>suggest Title</Button>
+{/* <Button variant='outlined' disabled={!editNotes.content}
+onClick={()=>handleSuggestTitle(editNotes.content)}>suggest Title</Button> */}
+<CommonButton
+label="suggest Title"
+disabled={!editNotes.content}
+onClick={()=>handleSuggestTitle(editNotes.content)}
+color="secondary"
+/>
                    </Grid>
                 </Grid>
                 
@@ -141,21 +149,37 @@ onClick={()=>handleSuggestTitle(editNotes.content)}>suggest Title</Button>
     <Grid container spacing={2} alignItems={'center'}>
 
     <Grid size={4}>
-        <Button variant="outlined" disabled={!editNotes.content}
-        // onClick={()=>handleGenerateSummary('generate')}>Generate Summary</Button>
-        onClick={()=>GenerateSummary('generate',editNotes.content)}>Generate Summary</Button>
-
+        {/* <Button variant="outlined" disabled={!editNotes.content}
+        onClick={()=>GenerateSummary('generate',editNotes.content)}>Generate Summary</Button> */}
+ <CommonButton
+label="Generate Summary"
+disabled={!editNotes.content}
+onClick={()=>GenerateSummary('generate',editNotes.content)}
+color="secondary"
+/>
         </Grid>
         <Grid size={4}>
-        <Button variant="outlined"
+        {/* <Button variant="outlined"
         disabled={!editNotes.content}
         onClick={()=>handleImproveWriting(editNotes.content)}
-        >Improve Writing</Button><br/>
+        >Improve Writing</Button> */}
+        <CommonButton
+label="Improve Writing"
+disabled={!editNotes.content}
+ onClick={()=>handleImproveWriting(editNotes.content)}
+color="secondary"
+/>
         </Grid>
        
         <Grid size={4}>
-        <Button variant="outlined" disabled={!editNotes.content}
-        onClick={()=>handleGenerateTags(editNotes.content)}>Generate Tags</Button>
+        {/* <Button variant="outlined" disabled={!editNotes.content}
+        onClick={()=>handleGenerateTags(editNotes.content)}>Generate Tags</Button> */}
+         <CommonButton
+label="Generate Tags"
+disabled={!editNotes.content}
+ onClick={()=>handleGenerateTags(editNotes.content)}
+color="secondary"
+/>
         </Grid>
     </Grid>
 

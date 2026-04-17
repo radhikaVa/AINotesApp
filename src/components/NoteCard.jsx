@@ -8,6 +8,7 @@ import { Box, Chip} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteNote } from '../services/notesService';
+import CommonButton from '../utils/CommonButton';
 
 
 
@@ -15,10 +16,6 @@ import { deleteNote } from '../services/notesService';
     const navigate=useNavigate();
     const dispatch=useDispatch()
 
-    const handleDelete=async(id)=>{
-    await dispatch(deleteNote(id))
-    
-    }
     const tags = Array.isArray(note.tag)
     ? note.tag
     : note.tag
@@ -33,7 +30,7 @@ import { deleteNote } from '../services/notesService';
               </Typography>
               <Typography variant="h5" component="div">
               <Typography variant="body2">
-  {note.content.length > 100
+  {note.content.length > 80
     ? note.content.slice(0, 40) + "..."
     : note.content}
 </Typography>
@@ -55,13 +52,25 @@ import { deleteNote } from '../services/notesService';
                 <Button>Read more →</Button>
                 </Link>
 
-                <Link to={`/edit/${note._id}`}>
+                {/* <Link to={`/edit/${note._id}`}>
               <Button size="small" onClick={(event)=>event.stopPropagation()}>Edit</Button>
-              </Link>
-              <Button size="small"  onClick={(event)=>{
+              </Link> */}
+                <Link to={`/edit/${note._id}`}>
+  {/* <Button variant="outlined">Edit</Button> */}
+    <CommonButton
+label="Edit"
+onClick={(event)=>event.stopPropagation()}
+color="secondary"
+/>
+  </Link>
+              {/* <Button size="small"  onClick={(event)=>{
                 event.stopPropagation();handleDelete(note._id)}}>Delete</Button>
-             
-               
+              */}
+                <CommonButton
+label="Delete"
+ onClick={(event)=>{event.stopPropagation();dispatch(deleteNote(note._id))}}
+color="error"
+/>
               
             </CardActions>
              

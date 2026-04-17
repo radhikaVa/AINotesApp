@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNote, getNoteById } from '../services/notesService';
+import CommonButton from '../utils/CommonButton';
 
 const NoteDetails = () => {
    // const notes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -101,11 +102,22 @@ const navigate=useNavigate()
 {/* Action Buttons */}
 <Box sx={{ mt: 4, display: "flex",flexWrap:'wrap', gap: 2 ,alignItems:'center'}}>
     <Link to={`/edit/${id}`}>
-  <Button variant="outlined">Edit</Button></Link>
+  {/* <Button variant="outlined">Edit</Button> */}
+    <CommonButton
+label="Edit"
+onClick={(event)=>event.stopPropagation()}
+color="secondary"
+/>
+  </Link>
   
-  <Button variant="outlined" color="error"
+  {/* <Button variant="outlined" color="error"
   onClick={()=>dispatch(deleteNote(id))}
-  >Delete</Button>
+  >Delete</Button> */}
+  <CommonButton
+label="Delete"
+ onClick={(event)=>{event.stopPropagation();dispatch(deleteNote(id))}}
+color="error"
+/>
   {/* <Button variant="outlined">Generate Summary</Button>
   <Button variant="outlined">Improve Writing</Button> */}
 </Box>

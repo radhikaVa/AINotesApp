@@ -5,6 +5,7 @@ import { Box, Button, Paper, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { getNoteById } from '../services/notesService'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { clearSelectedNote, setEditNotes } from '../features/notes/notesSlice'
 
 const NoteEditor = () => {
   const {selectedNote}=useSelector((state)=>state.notes)
@@ -33,7 +34,7 @@ const navigate=useNavigate()
       alignItems="center"
       sx={{ cursor: "pointer" ,mb:2}}
     >
-      <Button onClick={() => navigate("/")}>
+      <Button onClick={() => {dispatch(clearSelectedNote()); navigate("/")}}>
         <ArrowBackIcon />
       </Button>
 

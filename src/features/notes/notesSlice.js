@@ -77,6 +77,15 @@ state.theme=action.payload
         setMode:(state,action)=>{
           state.mode=action.payload
         },
+        clearSelectedNote: (state) => {
+  state.editNotes= {
+      title: "",
+      content: "",
+      summary: "",
+      improvedContent: "",
+      tag: []
+    }
+},
         setSnackbar: (state, action) => {
 
           state.snackbar = {
@@ -141,7 +150,7 @@ state.theme=action.payload
       }
 })
 
-export const {setNotes,addNotes,setSearchValue,setMode,setTheme,setSnackbar,
+export const {setNotes,addNotes,setSearchValue,setMode,setTheme,setSnackbar,clearSelectedNote,
     setTagPreview,setImprovedContent,setSelectedTag,setTitlePreview,setEditNotes,
     setSummaryPreview,setChecked,setLoading,setOpenSummaryDialog
 }=noteSlice.actions

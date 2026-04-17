@@ -6,6 +6,7 @@ import NoteEditor from "./components/NoteEditor";
 import NoteDetails from "./components/NoteDetails";
 import AppSnakeBar  from "./utils/AppSnakeBar";
 import MobileFabMenu from "./components/MobileFabMenu";
+import AppRoutes from "./routes/AppRoutes";
 
 
 function App() {
@@ -16,12 +17,13 @@ function App() {
     <MobileFabMenu/>
    <AppSnakeBar/>
     <br/>
-    <Routes>
+    {/* <Routes>
       <Route path="/" element={<Dashboard/>}/>
       <Route path="/create" element={<CreateNote/>}/>
       <Route path="/edit/:id" element={<NoteEditor/>}/>
       <Route path="/note/:id" element={<NoteDetails/>}/>
-    </Routes>
+    </Routes> */}
+    <AppRoutes/>
     </>
   );
 }
