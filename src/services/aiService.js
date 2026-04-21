@@ -1,17 +1,18 @@
 import axios from "axios";
-
 const BASE_URL=process.env.REACT_APP_BASE_URL
-export const generateSummary = async (text) => {
+
+export const generateSummary =
+//createAsyncThunk("notes/generateSummary",
+ async (text) => {
  
-  try {
+   try {
     const response = await axios.post(
       `${BASE_URL}/generate-summary`,
       {
         text
       }
     );
-    console.log(response.data.generateSummary,'summmmmmmmmmmm',response);
-    
+   console.log('into ene summary',response.data?.generateSummary)
     return {
       success: true,
       generateSummary: response.data?.generateSummary
@@ -25,7 +26,9 @@ export const generateSummary = async (text) => {
        "Summary generation failed"
     }; 
   }
-};
+}
+//);
+
 export const suggestTitle = async (text) => {
   console.log(text,'suggggggggg');
   

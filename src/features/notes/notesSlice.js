@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { deleteNote, getNoteById, getNotes, updateNote } from "../../services/notesService";
 
+
 const initialState={
     notes:[],
     editNotes: {
@@ -130,16 +131,31 @@ state.theme=action.payload
           .addCase(getNotes.rejected, (state) => {
             state.loading = false;
           })
-          .addCase(getNoteById.fulfilled,(state,action)=>{
+          .addCase(getNoteById.pending,(state,action)=>{
+            state.loading=true;
+          })
+           .addCase(getNoteById.fulfilled,(state,action)=>{
             state.loading=false;
             state.selectedNote=action.payload;
+          })
+           .addCase(getNoteById.rejected,(state,action)=>{
+            state.loading=false;
+          })
+          .addCase(deleteNote.pending, (state, action) => {
+           state.loading=true;
           })
           .addCase(deleteNote.fulfilled, (state, action) => {
 
             state.notes = state.notes.filter(
               note => note._id !== action.payload
             );
-        
+      })
+          .addCase(deleteNote.rejected, (state, action) => {
+           state.loading=false;
+          })
+          
+          .addCase(updateNote.pending,(state,action)=>{
+             state.loading=true;
           })
           .addCase(updateNote.fulfilled,(state,action)=>{
             const index=state.notes.findIndex((note)=>note._id===action.payload._id)
@@ -147,6 +163,22 @@ state.theme=action.payload
                 state.notes[index]=action.payload
             }
           })
+          .addCase(updateNote.rejected,(state,action)=>{
+             state.loading=false;
+          })
+          // ai reducers
+          // .addCase(generateSummary.pending,(state,action)=>{
+          //   state.loading=true
+          // })
+          // .addCase(generateSummary.fulfilled,(state,action)=>{
+          //   state.loading=false;
+          //   state.editNotes.summary=action.payload.generateSummary
+            
+          // })
+          //  .addCase(generateSummary.rejected,(state,action)=>{
+          //   state.loading=false;
+          //   state.error = action.error.message;
+          // })
       }
 })
 

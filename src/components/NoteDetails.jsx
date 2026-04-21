@@ -1,4 +1,4 @@
-import { Box,Typography,Chip,Button, Accordion,AccordionSummary,AccordionDetails } from '@mui/material'
+import { Box,Typography,Chip,Button, Accordion,AccordionSummary,AccordionDetails,CircularProgress } from '@mui/material'
 import React, { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -9,7 +9,7 @@ import CommonButton from '../utils/CommonButton';
 const NoteDetails = () => {
    // const notes = JSON.parse(localStorage.getItem("notes")) || [];
     const { id } = useParams();
-    const {selectedNote}=useSelector((state)=>state.notes)
+    const {selectedNote,loading}=useSelector((state)=>state.notes)
     console.log(selectedNote,'selectedNote---',id);
     const dispatch=useDispatch();
 
@@ -25,6 +25,10 @@ const navigate=useNavigate()
   return (
     <>
     <Box sx={{ maxWidth: 800, margin: "auto", p: 3,mt: { xs: 5} }} >
+      {
+        selectedNote ?(
+
+      <Box>
 
 {/* Title */}
 <Box display={'flex'} gap={2} sx={{cursor:'pointer'}}>
@@ -121,7 +125,13 @@ color="error"
   {/* <Button variant="outlined">Generate Summary</Button>
   <Button variant="outlined">Improve Writing</Button> */}
 </Box>
+ </Box> ):(
+<Box textAlign={'center'}>
+    {loading && <CircularProgress />}
+    </Box>
 
+  )
+      }
 </Box>
     </>
   )

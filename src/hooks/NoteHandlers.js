@@ -5,15 +5,15 @@ import {  setLoading, setEditNotes, setOpenSummaryDialog, setSnackbar } from "..
 export  const useGenerateSummary = () => {
     const dispatch=useDispatch();
 
-const GenerateSummary = async (type,content) => {
+const GenerateSummary = async (content) => {
 console.log(content,'reg');
 
       if (!content?.trim()) return;
   
       dispatch(setLoading(true));
   
-      const result = await generateSummary(content);
-    console.log(result.generateSummary,'hhhhhhhhhhhhhhhhhhhhhhh');
+      const result =await  generateSummary(content);
+    console.log(result,'hhhhhhhhhhhhhhhhhhhhhhh');
       if (!result.success) {
 
   dispatch(
@@ -47,23 +47,13 @@ if (!result.generateSummary) {
   
         if (result.generateSummary?.length > 0) {
     
-        // const field =
-        // type === "generate"
-        //   ? "summary"
-        //   : "improvedContent";
+        
       
       dispatch(
         setEditNotes({
          summary: result.generateSummary
         })
       );
-    
-        // setEditNotes((prev) => ({
-        //                   ...prev,
-        //                   summary: result.generateSummary
-        //                 }))
-    
-    
           dispatch(
             setSnackbar({
               open: true,

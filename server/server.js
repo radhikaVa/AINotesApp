@@ -11,6 +11,7 @@ app.use(cors({
 }));
 app.use(express.json());
 connectDB ()
+
  async function generateTitle(noteText) {
 
 	const response = await fetch(
